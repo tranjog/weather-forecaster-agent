@@ -19,8 +19,10 @@ weather forecast for ONE location.
 Run the weather-forecast skill's script directly:
 
 ```
-/Users/joachimtranvag/Development/ClaudeFun/agents/.claude/skills/weather-forecast/scripts/run.sh <city> <country> [days_ahead]
+.claude/skills/weather-forecast/scripts/run.sh <city> <country> [days_ahead]
 ```
+
+This path is relative to the project root (the directory you are launched in).
 
 - Quote multi-word city or country names, e.g. `run.sh "Font-Romeu" France 3`.
 - `days_ahead` defaults to 7 if the caller did not specify one.
