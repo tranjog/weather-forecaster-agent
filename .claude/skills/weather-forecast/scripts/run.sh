@@ -13,6 +13,13 @@ if ! [[ "$days_ahead" =~ ^[0-9]+$ ]]; then
   exit 1
 fi
 
+# Open-Meteo serves at most 16 daily forecast days
+if (( days_ahead < 1 )); then
+  days_ahead=1
+elif (( days_ahead > 16 )); then
+  days_ahead=16
+fi
+
 # Weather code to description
 get_weather_condition() {
   local code=$1
@@ -56,7 +63,7 @@ if [[ -z "$lat" || "$lat" == "null" ]]; then
 fi
 
 # Fetch forecast
-forecast=$(curl -s "https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto")
+forecast=$(curl -s "https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&forecast_days=${days_ahead}&timezone=auto")
 
 # Parse current weather
 current_temp=$(echo "$forecast" | jq -r '.current.temperature_2m')
